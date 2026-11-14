@@ -1,0 +1,54 @@
+[h1]Clothed Vampires[/h1]
+
+[i]Dress your vampires and let them walk in the sun.[/i]
+
+In the normal game, a sanguophage in sunlight is slowed down and upset by it, no matter what they're wearing. A colonist bundled up from neck to ankles suffers exactly as much as one standing there naked. Clothed Vampires fixes that: if a sunlight-sensitive pawn's [b]torso and legs are covered by clothing[/b], the sun stops bothering them.
+
+[b]Found a bug, or have a request?[/b]
+Please log it on the [url=https://github.com/DaraynLB/ClothedVampires/issues]GitHub Issues page[/url] rather than the comments below. It's much easier for me to track and follow up on there.
+
+[h2]Requirements[/h2]
+[list]
+[*] RimWorld 1.6 or 1.7, with Biotech. Both versions are supported, and the game loads the right one automatically.
+[*] Harmony: required, load before Clothed Vampires
+[/list]
+
+[h2]What it does[/h2]
+A pawn counts as [b]covered[/b] when clothing covers both the torso and the legs:
+[list]
+[*] One item that covers both is enough, such as a duster.
+[*] So is a shirt plus pants.
+[*] A shirt on its own isn't enough. The legs are still in the sun.
+[*] [b]Underwear doesn't count.[/b] Underwear from UnderWhere or Undergarments Core leaves your pawn exposed, even a one-piece set that covers torso and legs. Put real clothes on over it and they're protected.
+[/list]
+
+While covered and standing in sunlight, a pawn ignores the [b]slowdown[/b] and the [b]"sunlight sensitivity" mood penalty[/b] from Biotech's mild and intense UV sensitivity genes. For example, a sanguophage with mild UV sensitivity normally walks at 90% speed with a -6 mood penalty in the sun. Dressed, they walk at full speed and the mood penalty disappears. (Tested in game with mild UV sensitivity. Intense uses the same game check.)
+
+Modded genes that use the game's own "in sunlight" check should be covered the same way, though none has been tested by name yet.
+
+[h2]Compatibility[/h2]
+[list]
+[*] [b]UnderWhere[/b] and [b]Undergarments Core[/b]: their underwear is recognised and doesn't count as clothing.
+[*] [b]Combat Extended[/b]: works alongside it (tested on RimWorld 1.6).
+[*] Loads cleanly alongside [b]Vanilla Expanded Framework[/b], [b]Alpha Genes[/b] and [b]Big and Small[/b].
+[*] Your save files: the mod stores nothing in them.
+[/list]
+If you run into a conflict, let me know on the issue tracker linked above.
+
+[h2]What it doesn't touch (yet)[/h2]
+[list]
+[*] [b]Alpha Genes' vicious and lethal UV sensitivity.[/b] These knock pawns out or burn them in sunlight using Vanilla Expanded Framework's own effects, and clothing doesn't block those yet. Support for them, with settings to choose how far the protection goes, is the next update.
+[*] Night-time bonuses or plain daytime penalties from modded genes
+[*] Where sunlight-sensitive pawns choose to wander or relax
+[*] Pawns who aren't covered: they behave exactly as in the normal game
+[/list]
+
+[h2]How this mod was built[/h2]
+Full transparency: the code for this mod was written by Claude (Anthropic's AI), as my development partner. It followed a structured process called [url=https://github.com/github/spec-kit]Spec Kit[/url]: a written spec of exactly what the mod should do, a technical plan checked against RimWorld's own code, a step-by-step task list, and only then the code. Every decision along the way was made by a person.
+
+Every in-game test was played by a person in a real running game. On RimWorld 1.7, with a large mod list including Vanilla Expanded Framework, Alpha Genes, Big and Small, UnderWhere and Undergarments Core, a sanguophage was tested naked, in a shirt only, in a shirt and pants, in a duster, in each underwear mod's underwear, and in clothes over underwear, then saved and reloaded. The mod was also loaded on 1.7 with nothing but Harmony, and on 1.6 with Combat Extended, where the same save loaded and the protection still worked. The specs, plans, test records and full history are public: [url=https://github.com/DaraynLB/ClothedVampires]https://github.com/DaraynLB/ClothedVampires[/url]
+
+[h2]Credits[/h2]
+Built with the help of Claude (Anthropic).
+
+Enjoying Clothed Vampires? A rating helps other players find it. Bug reports and feedback are always welcome.
