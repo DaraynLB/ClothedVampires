@@ -11,6 +11,15 @@ Run these after implementation. Results feed the docs (FR-013), so record each o
 - For V2b: Vanilla Expanded Framework, Alpha Genes and the Big and Small mods (all
   installed on this machine).
 
+## Mod list decision (2026-11-14)
+
+Functional checks (V3, V4, V5) run on the user's **full mod list** (Alpha Genes, Vanilla
+Expanded Framework, Big and Small, both underwear mods and more), not a minimal one. The
+customer's bug happened with a large mod list, so a minimal list would hide the
+interactions that matter. V2 (minimal list) is kept as a **load-only** check (launch to
+the main menu, read the log, quit) to satisfy the constitution's "optional mods absent"
+rule (Principles I and II); user chose this over amending the constitution.
+
 ## V1. Build output (no game needed)
 
 From `Source/`: `dotnet build`
@@ -45,6 +54,10 @@ Other mods' own warnings are noise. This load is also the baseline for spec 002.
 ## V3. Protection works on 1.7
 
 Dev Mode on → Dev quicktest. Daytime, clear weather, pawn standing outdoors and unroofed.
+
+After every clothing change, run at speed 1 for about 30 real seconds before reading the
+mood list: situational mood thoughts refresh periodically, so the Needs tab lags behind.
+Move speed updates immediately.
 
 1. Spawn a **sanguophage** colonist (intense UV sensitivity) and strip its clothes.
    Expect, in sunlight: Needs tab shows **"sunlight sensitivity" -12**; Move speed (info

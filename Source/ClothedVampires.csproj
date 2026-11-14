@@ -1,13 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <!-- net472 = RimWorld 1.6 (Unity/Mono), net10.0 = RimWorld 1.7 (Waylith/.NET 10) -->
+    <TargetFrameworks>net472;net10.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <RootNamespace>ClothedVampires</RootNamespace>
     <AssemblyName>ClothedVampires</AssemblyName>
-
-    <!-- Build output lands directly in the mod's Assemblies folder -->
-    <OutputPath>..\Assemblies\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 
     <!-- Avoids stray .pdb files that can trip up RimWorld's assembly loader -->
@@ -17,15 +15,30 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- Auto-references the game's own DLLs. Version should roughly match
-         the installed RimWorld version. If it can't find the install
-         automatically, uncomment RimWorldPath below. -->
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*" />
+  <!-- Build output lands directly in each version's Assemblies folder -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net472'">
+    <OutputPath>..\1.6\Assemblies\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <OutputPath>..\1.7\Assemblies\</OutputPath>
+    <!-- .NET Core builds emit a .deps.json; RimWorld doesn't need it -->
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+  </PropertyGroup>
 
+  <ItemGroup>
     <!-- Harmony, for patching game methods. Compile-time only: the Harmony
-         mod (brrainz.harmony) supplies 0Harmony.dll at runtime. -->
+         mod (brrainz.harmony) supplies the right 0Harmony.dll per game version. -->
     <PackageReference Include="Lib.Harmony" Version="2.3.*" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <!-- Auto-references the game's own DLLs, per game version. If it can't find
+       the install automatically, uncomment RimWorldPath below. The 1.7 package
+       is a prerelease while 1.7 is in beta, so it is pinned to the game build. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.7.5005-unstable" />
   </ItemGroup>
 
   <!--
@@ -39,13 +52,20 @@
     <ModPublishDir>$(RimWorldModsPath)\$(AssemblyName)</ModPublishDir>
   </PropertyGroup>
 
-  <Target Name="PublishToModsFolder" AfterTargets="Build">
+  <!-- Runs once after both target frameworks have built (outer build), not per framework.
+       Publishes only what RimWorld needs: About/, LoadFolders.xml, 1.6/, 1.7/. -->
+  <Target Name="PublishToModsFolder" AfterTargets="Build" Condition="'$(TargetFramework)' == ''">
     <ItemGroup>
       <AboutFiles Include="$(ProjectDir)..\About\**\*.*" />
-      <AssemblyFiles Include="$(ProjectDir)..\Assemblies\**\*.*" />
+      <V16Files Include="$(ProjectDir)..\1.6\**\*.*" />
+      <V17Files Include="$(ProjectDir)..\1.7\**\*.*" />
     </ItemGroup>
+    <!-- A root-level Assemblies/ would load on every game version; remove the pre-1.7 one -->
+    <RemoveDir Directories="$(ModPublishDir)\Assemblies" />
+    <Copy SourceFiles="$(ProjectDir)..\LoadFolders.xml" DestinationFolder="$(ModPublishDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(AboutFiles)" DestinationFolder="$(ModPublishDir)\About\%(RecursiveDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(AssemblyFiles)" DestinationFolder="$(ModPublishDir)\Assemblies\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(V16Files)" DestinationFolder="$(ModPublishDir)\1.6\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(V17Files)" DestinationFolder="$(ModPublishDir)\1.7\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

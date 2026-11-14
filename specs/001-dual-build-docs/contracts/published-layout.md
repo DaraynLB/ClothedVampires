@@ -9,7 +9,8 @@ mod's external interface for this feature.
 ```text
 Mods/ClothedVampires/
 ├── About/
-│   └── About.xml
+│   ├── About.xml
+│   └── PublishedFileId.txt     # Steam Workshop item 3819404247 (tracked in the repo)
 ├── LoadFolders.xml
 ├── 1.6/
 │   └── Assemblies/
