@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>ClothedVampires</RootNamespace>
+    <AssemblyName>ClothedVampires</AssemblyName>
+
+    <!-- Build output lands directly in the mod's Assemblies folder -->
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <!-- Avoids stray .pdb files that can trip up RimWorld's assembly loader -->
+    <DebugType>none</DebugType>
+
+    <Nullable>disable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Auto-references the game's own DLLs. Version should roughly match
+         the installed RimWorld version. If it can't find the install
+         automatically, uncomment RimWorldPath below. -->
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*" />
+
+    <!-- Harmony, for patching game methods. Compile-time only: the Harmony
+         mod (brrainz.harmony) supplies 0Harmony.dll at runtime. -->
+    <PackageReference Include="Lib.Harmony" Version="2.3.*" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <!--
+  <PropertyGroup>
+    <RimWorldPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
+  </PropertyGroup>
+  -->
+
+  <PropertyGroup>
+    <RimWorldModsPath Condition="'$(RimWorldModsPath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</RimWorldModsPath>
+    <ModPublishDir>$(RimWorldModsPath)\$(AssemblyName)</ModPublishDir>
+  </PropertyGroup>
+
+  <Target Name="PublishToModsFolder" AfterTargets="Build">
+    <ItemGroup>
+      <AboutFiles Include="$(ProjectDir)..\About\**\*.*" />
+      <AssemblyFiles Include="$(ProjectDir)..\Assemblies\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(AboutFiles)" DestinationFolder="$(ModPublishDir)\About\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(AssemblyFiles)" DestinationFolder="$(ModPublishDir)\Assemblies\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>
