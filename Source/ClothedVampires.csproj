@@ -7,6 +7,10 @@
     <RootNamespace>ClothedVampires</RootNamespace>
     <AssemblyName>ClothedVampires</AssemblyName>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <!-- That setting also stops the SDK splitting obj\ by framework, so the two parallel
+         builds would share obj\Debug\ and one framework's DLL could be copied into the
+         other's output folder (issue #2: 1.6 shipped the net10.0 DLL). Keep them apart. -->
+    <IntermediateOutputPath>obj\$(Configuration)\$(TargetFramework)\</IntermediateOutputPath>
 
     <!-- Avoids stray .pdb files that can trip up RimWorld's assembly loader -->
     <DebugType>none</DebugType>
