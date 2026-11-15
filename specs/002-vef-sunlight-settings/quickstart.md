@@ -22,6 +22,11 @@ Debug actions); the genes are `AG_Sensitivity_Vicious`, `AG_UVSensitivity_Minor`
 `dotnet build` from `Source/`: succeeds, no warnings from the mod; both DLLs; Mods folder
 layout unchanged from spec 001 (contract in spec 001).
 
+**Framework check (issue #2):** each DLL must carry its own framework stamp, in the repo and
+in the Mods folder: `1.6/Assemblies/ClothedVampires.dll` → `.NETFramework,Version=v4.7.2`,
+`1.7/Assemblies/ClothedVampires.dll` → `.NETCoreApp,Version=v10.0`
+(`grep -aoE "v4\.7\.2|v10\.0" <dll>`). The two DLLs must not be identical.
+
 ## V2. Load and settings window (1.7, full list)
 
 1. Log: one "Mod loaded" line and "Vanilla Expanded Framework sunlight effects found…";

@@ -11,6 +11,7 @@ namespace ClothedVampires
             var harmony = new Harmony("daraynlb.clothedvampires");
             harmony.PatchAll();
             Log.Message("[ClothedVampires] Mod loaded, Harmony patches applied.");
+            Log.Message(VefCompat.TryPatch(harmony));
         }
     }
 }
