@@ -158,3 +158,7 @@ T026 docs/settings-guide.md  ∥  T027 docs/steam-workshop-description.txt  ∥ 
 2. Add US2 (burns), then verify US3–US5 in the same session.
 3. 1.6 smoke test and release docs, then commit; push/PR and Workshop upload only with the
    user's go-ahead.
+
+## Appended after implementation (2026-11-14)
+
+- [X] T033 Make the user-supplied Workshop preview image compliant: move the source `About/Designer (2).png` (1536×1024, 2.87 MB) to `Art/Preview-source.png` (raw art, never published); write `About/Preview.png` (the exact name RimWorld's Workshop uploader and mod list use) at full 1536×1024, 256-colour palette (median cut + k-means, Floyd–Steinberg dither), 0.51 MB — under Steam's 1 MB preview limit; mean colour error 2.8/255, green speech bubble preserved (an earlier median-cut-only palette turned it beige). Kept 3:2 rather than cropping to 16:9 so neither the title nor the paws are cut; Steam doesn't require 16:9. Deployed by the build (byte-identical in the Mods folder) — done 2026-11-14
